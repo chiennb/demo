@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { SystemConstants } from '../../core/common/system.contants';
+import { SystemConstants } from '../../core/common/system.constants';
 import { LoggedInUser } from '../../core/domain/loggedin.user';
 
 @Injectable()

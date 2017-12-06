@@ -74,6 +74,6 @@ export class NotificationService {
       } else {
 
       }
-    })
-  });
+    });
+  };
 }
