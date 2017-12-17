@@ -6,6 +6,8 @@ import { mainRoutes } from './main.routes';
 import { HomeModule } from './home/home.module';
 import { UserModule } from './user/user.module';
 
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+
 import { UtilityService } from '../core/services/utility.service';
 import {AuthenService} from '../core/services/authen.service';
 
@@ -14,7 +16,10 @@ import {AuthenService} from '../core/services/authen.service';
     CommonModule,
     HomeModule,
     UserModule,
-    RouterModule.forChild(mainRoutes)
+
+    RouterModule.forChild(mainRoutes),
+
+    PaginationModule.forRoot()
   ],
   providers:[UtilityService, AuthenService],
   declarations: [MainComponent]
