@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {FormsModule} from '@angular/forms';
 
 import {PaginationModule} from 'ngx-bootstrap/pagination';
+import {ModalModule} from 'ngx-bootstrap/modal';
 
 import { RoleComponent } from './role.component';
 import { DataService } from '../../core/services/data.service';
@@ -21,6 +22,7 @@ const roleRoutes: Routes = [
     CommonModule,
     FormsModule,
     PaginationModule,
+    ModalModule.forRoot(),
     RouterModule.forChild(roleRoutes)
   ],
   declarations: [RoleComponent],
