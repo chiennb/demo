@@ -5,6 +5,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { DataService } from '../../core/services/data.service';
 import {NotificationService} from '../../core/services/notification.service';
 import {MessageConstants} from '../../core/common/message.constants';
+import { SystemConstants } from '../../core/common/system.constants';
 
 @Component({
   selector: 'app-role',
@@ -51,6 +52,19 @@ export class RoleComponent implements OnInit {
     this.modalAddEdit.show()
   }
 
+  showEditModal(id:any) {
+    this.loadRole(id);
+    this.modalAddEdit.show()
+  }
+
+  loadRole(id:any) {
+    this._dataService.get(`/api/appRole/detail/${id}`)
+      .subscribe((response: any) => {
+        this.entity = response;
+        console.log(response);
+      });
+  }
+
   saveChange(valid: boolean){
     if(!valid) return;
 
@@ -62,5 +76,25 @@ export class RoleComponent implements OnInit {
         this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
       },error=>this._dataService.handleError(error));
     }
+    else{
+      this._dataService.put('/api/appRole/update',JSON.stringify(this.entity))
+      .subscribe((response:any)=>{
+        this.loadData();
+        this.modalAddEdit.hide();
+        this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+      },error=>this._dataService.handleError(error));
+    }
+  }
+
+  deleteItem(id: any){
+    this._notificationService.printConfirmDialog(MessageConstants.CONFIRM_DELETE_MSG,()=> this.deleteItemConfirm(id))
+  }
+
+  deleteItemConfirm(id: any){
+    this._dataService.delete('/api/appRole/delete','id',id)
+      .subscribe((response:any)=>{
+        this.loadData();
+        this._notificationService.printSuccessMessage(MessageConstants.DELETE_MSG);
+      },error=>this._dataService.handleError(error));
   }
 }
