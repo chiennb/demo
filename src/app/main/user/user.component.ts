@@ -9,6 +9,9 @@ import { NotificationService } from '../../core/services/notification.service';
 import { MessageConstants } from '../../core/common/message.constants';
 import { SystemConstants } from '../../core/common/system.constants';
 import { error } from 'selenium-webdriver';
+import { Daterangepicker } from 'ng2-daterangepicker';
+
+declare var moment: any;
 
 @Component({
   selector: 'app-user',
@@ -86,7 +89,13 @@ export class UserComponent implements OnInit {
     this._dataService.get(`/api/appUser/detail/${id}`)
       .subscribe((response: any) => {
         this.entity = response;
-        console.log(response);
+        this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('DD/MM/YYYY');
+        console.log(this.entity.Roles);
+        for(let role of this.entity.Roles){
+          console.log(role);
+          this.myRoles.push(role);
+        }
+        console.log(this.myRoles);
       });
   }
 
