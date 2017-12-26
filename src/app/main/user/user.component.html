@@ -81,17 +81,17 @@
       <div class="modal-body">
         <form action="" class="form-horizontal form-label-left input-mask" novalidate #addEditForm="ngForm" (ngSubmit)="saveChange(addEditForm.valid)" *ngIf="entity">
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-ms-3 col-xs-12">Họ tên</label>
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Họ tên</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="hidden" [(ngModel)]="entity.Id" name="id">
-              <input type="text" class="form-control" #name="ngModel" [(ngModel)]="entity.FullName" required minlength="3" name="fullName">
-              <small class="text-danger" [hidden]="fullName.valid || (fullName.pristine && !addEditForm.submitted)">
+              <input type="text" class="form-control" #name="ngModel" [(ngModel)]="entity.FullName" required minlength="3" name="fullName2">
+              <small [hidden]="name.valid || (name.pristine && !addEditForm.submitted)" class="text-danger">
                 Bạn phải nhập tên ít nhất 3 ký tự
               </small>
             </div>
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-ms-3 col-xs-12">Tài khoản</label>
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Tài khoản</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="text" class="form-control" #userName="ngModel" [(ngModel)]="entity.UserName" required minlength="3" name="user_Name">
               <small class="text-danger" [hidden]="userName.valid || (userName.pristine && !addEditForm.submitted)">
@@ -100,7 +100,7 @@
             </div>
           </div>
           <div class="form-group" *ngIf="!entity.Id">
-            <label for="" class="control-label col-md-3 col-ms-3 col-xs-12">Mật khẩu</label>
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Mật khẩu</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="password" class="form-control" #password="ngModel" [(ngModel)]="entity.Password" required minlength="6" name="password">
               <small class="text-danger" [hidden]="password.valid || (password.pristine && !addEditForm.submitted)">
@@ -109,16 +109,16 @@
             </div>
           </div>
           <div class="form-group" *ngIf="!entity.Id">
-            <label for="" class="control-label col-md-3 col-ms-3 col-xs-12">Xác nhận mật khẩu</label>
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Xác nhận mật khẩu</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="password" class="form-control" #confirmPassword="ngModel" [(ngModel)]="entity.ConfirmPassword" required validateEqual="password" name="confirmPassword">
+              <input type="password" class="form-control" #confirmPassword="ngModel" [(ngModel)]="entity.ConfirmPassword" required name="confirmPassword">
               <small class="text-danger" [hidden]="confirmPassword.valid || (confirmPassword.pristine && !addEditForm.submitted)">
                 Xác nhận mật khẩu sai
               </small>
             </div>
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-ms-3 col-xs-12">Email</label>
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="email" class="form-control" #email="ngModel" [(ngModel)]="entity.Email" required name="email">
               <small class="text-danger" [hidden]="email.valid || (email.pristine && !addEditForm.submitted)">
@@ -127,9 +127,54 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-ms-3 col-xs-12">Địa chỉ</label>
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Địa chỉ</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="password" class="form-control" #address="ngModel" [(ngModel)]="entity.Address" required name="address">
+              <input type="text" #address="ngModel" [(ngModel)]="entity.Address" name="address" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Điện thoại</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" class="form-control" #phoneNumber="ngModel" [(ngModel)]="entity.PhoneNumber" required name="phoneNumber">
+              <small class="text-danger" [hidden]="phoneNumber.valid || (phoneNumber.pristine && !addEditForm.submitted)">
+                Bạn phải nhập số điện thoại
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Avatar</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="file" #avatar name="avatar" class="form-control">
+              <p class="help-block label label-danger">Chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg</p>
+              <input type="hidden" [(ngModel)]="entity.Avatar" name="avatarUrl">
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Avatar">
+              <img [src]="entity.Avatar" width="128">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Ngày sinh</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" class="form-control" #birthday="ngModel" daterangepicker [options]="dateOptions" [(ngModel)]="entity.BirthDay" required name="birthDay">
+              <small class="text-danger" [hidden]="birthday.valid || (birthday.pristine && !addEditForm.submitted)">
+                Bạn phải nhập ngày sinh
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Giới tính</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="radio" (change)="selectGender($event)" #gender="ngModel" [checked]="entity.Gender=='True'" name="gender" [ngModel]="entity.Gender" value="True" required>Name
+              <input type="radio" (change)="selectGender($event)" #gender="ngModel" [checked]="entity.Gender=='False'" name="gender" [ngModel]="entity.Gender" value="False">Nữ
+              <small class="text-danger" [hidden]="gender.valid || (gender.pristine && !addEditForm.submitted)">
+                Bạn phải nhập giới tính
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Thuộc nhóm</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <ss-multiselect-dropdown [ngModelOptions]="{standalone: true}" [options]="allRoles" [(ngModel)]="myRoles"></ss-multiselect-dropdown>
             </div>
           </div>
           <div class="ln_solid"></div>
@@ -137,15 +182,6 @@
             <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
               <button type="button" (click)="modalAddEdit.hide()" class="btn btn-primary">Hủy bỏ</button>
               <button type="submit" [disabled]="!addEditForm.form.valid" class="btn btn-success">Cập nhật</button>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="" class="control-label col-md-3 col-ms-3 col-xs-12">Số điện thoại</label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" class="form-control" #phoneNumber="ngModel" [(ngModel)]="entity.PhoneNumber" required name="phoneNumber">
-              <small class="text-danger" [hidden]="phoneNumber.valid || (phoneNumber.pristine && !addEditForm.submitted)">
-                Bạn phải nhập số điện thoại
-              </small>
             </div>
           </div>
         </form>
