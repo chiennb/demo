@@ -10,6 +10,7 @@ import { MultiselectDropdownModule } from 'angular2-dropdown-multiselect';
 import { Daterangepicker } from 'ng2-daterangepicker';
 
 import { DataService } from '../../core/services/data.service';
+import { UploadService } from '../../core/services/upload.service';
 import { NotificationService } from '../../core/services/notification.service';
 
 export const userRoutes: Routes = [
@@ -28,6 +29,6 @@ export const userRoutes: Routes = [
     RouterModule.forChild(userRoutes)
   ],
   declarations: [UserComponent],
-  providers: [DataService, NotificationService]
+  providers: [DataService, UploadService, NotificationService]
 })
 export class UserModule { }

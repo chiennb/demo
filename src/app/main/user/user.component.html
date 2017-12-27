@@ -49,7 +49,7 @@
               <td>{{user.BirthDay}}</td>
               <td>{{user.PhoneNumber}}</td>
               <td>
-                <img [src]="user.Avatar" class="small-image" alt="">
+                <img [src]="baseFolder + user.Avatar" class="img-responsive" width="128" alt="">
               </td>
               <td>
                 <button class="btn btn-primary" (click)="showEditModal(user.Id)">
@@ -82,12 +82,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="" class="form-horizontal form-label-left input-mask" novalidate #addEditForm="ngForm" (ngSubmit)="saveChange(addEditForm.valid)"
+        <form class="form-horizontal form-label-left" novalidate #addEditForm="ngForm" (ngSubmit)="saveChange(addEditForm.valid)"
           *ngIf="entity">
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Họ tên</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Họ tên</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="hidden" [(ngModel)]="entity.Id" name="id">
               <input type="text" #name="ngModel" [(ngModel)]="entity.FullName" required minlength="3" name="fullName2" class="form-control">
               <small [hidden]="name.valid || (name.pristine && !addEditForm.submitted)" class="text-danger">
                 Bạn phải nhập tên ít nhất 3 ký tự
@@ -95,7 +94,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Tài khoản</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tài khoản</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="text" #userName="ngModel" [(ngModel)]="entity.UserName" required name="user_Name" class="form-control">
               <small [hidden]="userName.valid || (userName.pristine && !addEditForm.submitted)" class="text-danger">
@@ -104,7 +103,7 @@
             </div>
           </div>
           <div class="form-group" *ngIf="!entity.Id">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Mật khẩu</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mật khẩu</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="password" #password="ngModel" [(ngModel)]="entity.Password" required minlength="6" name="password" class="form-control">
               <small [hidden]="password.valid || (password.pristine && !addEditForm.submitted)" class="text-danger">
@@ -113,63 +112,65 @@
             </div>
           </div>
           <div class="form-group" *ngIf="!entity.Id">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Xác nhận mật khẩu</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Xác nhận mật khẩu</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="password" #confirmPassword="ngModel" [(ngModel)]="entity.ConfirmPassword" required
-			  minLength="6" name="confirmPassword" class="form-control">
+              <input type="password" #confirmPassword="ngModel" [(ngModel)]="entity.ConfirmPassword" required minLength="6" name="confirmPassword"
+                class="form-control">
               <small [hidden]="confirmPassword.valid || (confirmPassword.pristine && !addEditForm.submitted)" class="text-danger">
                 Xác nhận mật khẩu sai
               </small>
             </div>
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="entity.Email" required  
-			  name="email" class="form-control">
+              <input type="text" #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="entity.Email" required
+                name="email" class="form-control">
               <small [hidden]="email.valid || (email.pristine && !addEditForm.submitted)" class="text-danger">
                 Bạn phải nhập email
               </small>
             </div>
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Địa chỉ</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Địa chỉ</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="text" #address="ngModel" [(ngModel)]="entity.Address" name="address" class="form-control">
             </div>
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Điện thoại</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Điện thoại</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="text" #phoneNumber="ngModel" [(ngModel)]="entity.PhoneNumber" required name="phoneNumber" class="form-control">
               <small [hidden]="phoneNumber.valid || (phoneNumber.pristine && !addEditForm.submitted)" class="text-danger">
                 Bạn phải nhập số điện thoại
               </small>
+              PhoneNumber: {{entity.PhoneNumber}}
             </div>
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Avatar</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Avatar</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="file" #avatar name="avatar" class="form-control">
               <p class="help-block label label-danger">Chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg</p>
               <input type="hidden" [(ngModel)]="entity.Avatar" name="avatarUrl">
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Avatar">
-              <img [src]="entity.Avatar" width="128">
+              <img [src]="baseFolder+entity.Avatar" width="128">
             </div>
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Ngày sinh</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Ngày sinh</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #birthday="ngModel" daterangepicker [options]="dateOptions" [(ngModel)]="entity.BirthDay" name="birthDay" 
-			  class="form-control">
+              <input type="text" #birthday="ngModel" daterangepicker [options]="dateOptions" [(ngModel)]="entity.BirthDay" name="birthDay"
+                class="form-control">
             </div>
+			BirdDay: {{birthday.value}}
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Giới tính</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Giới tính</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="radio" (change)="selectGender($event)" #gender="ngModel" [checked]="entity.Gender=='True'" name="gender" [ngModel]="entity.Gender"
-                value="True" required>Name
+                value="True" required>Nam
               <input type="radio" (change)="selectGender($event)" #gender="ngModel" [checked]="entity.Gender=='False'" name="gender" [ngModel]="entity.Gender"
                 value="False">Nữ
               <small class="text-danger" [hidden]="gender.valid || (gender.pristine && !addEditForm.submitted)">
@@ -178,10 +179,11 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="" class="control-label col-md-3 col-sm-3 col-xs-12">Thuộc nhóm</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Thuộc nhóm</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <ss-multiselect-dropdown [ngModelOptions]="{standalone: true}" [options]="allRoles" [(ngModel)]="myRoles"></ss-multiselect-dropdown>
             </div>
+			Roles:{{myRoles}}
           </div>
           <div class="ln_solid"></div>
           <div class="form-group">

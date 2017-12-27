@@ -6,6 +6,8 @@ import { IMultiSelectOption } from 'angular2-dropdown-multiselect';
 
 import { DataService } from '../../core/services/data.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { UploadService } from '../../core/services/upload.service';
+
 import { MessageConstants } from '../../core/common/message.constants';
 import { SystemConstants } from '../../core/common/system.constants';
 import { error } from 'selenium-webdriver';
@@ -28,18 +30,21 @@ export class UserComponent implements OnInit {
   public entity: any;
 
   @ViewChild('modalAddEdit') public modalAddEdit: ModalDirective;
+  @ViewChild('avatar') public avatar;
 
   public users: any[];
   public allRoles: IMultiSelectOption[] = [];
+  public baseFolder: string = SystemConstants.BASE_API;
   public roles: any[];
 
   public dateOptions: any = {
     locale: { format: 'DD/MM/YYYY' },
     alwaysShowCalendars: false,
     singleDatePicker: true
-  }
+  };
 
-  constructor(private _dataService: DataService, private _notificationService: NotificationService) { }
+  constructor(private _dataService: DataService,
+    private _notificationService: NotificationService, private _uploadService: UploadService) { }
 
   ngOnInit() {
     this.loadRoles();
@@ -68,6 +73,18 @@ export class UserComponent implements OnInit {
         console.log(this.allRoles);
       }, error => this._dataService.handleError(error));
   }
+  loadUserDetail(id: any) {
+    this.myRoles = [];
+    this._dataService.get(`/api/appUser/detail/${id}`)
+      .subscribe((response: any) => {
+        this.entity = response;
+        for (let role of this.entity.Roles) {
+          this.myRoles.push(role);
+        }
+        this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('DD/MM/YYYY');
+        console.log(this.myRoles);
+      });
+  }
 
   pageChanged(event: any): void {
     console.log(event);
@@ -85,23 +102,27 @@ export class UserComponent implements OnInit {
     this.modalAddEdit.show()
   }
 
-  loadUserDetail(id: any) {
-    this._dataService.get(`/api/appUser/detail/${id}`)
-      .subscribe((response: any) => {
-        this.entity = response;
-        this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('DD/MM/YYYY');
-        console.log(this.entity.Roles);
-        for(let role of this.entity.Roles){
-          console.log(role);
-          this.myRoles.push(role);
-        }
-        console.log(this.myRoles);
-      });
-  }
+
 
   saveChange(valid: boolean) {
     if (!valid) return;
+    this.entity.Roles = this.myRoles;
+    let fi = this.avatar.nativeElement;
+    if (fi.files.length > 0) {
+      this._uploadService.postWithFile('/api/upload/saveImage', null, fi.files)
+        .then((imageUrl: string) => {
+          this.entity.Avatar = imageUrl;
+        }).then(() => {
+          this.saveData();
+        })
+    }
+    else {
+      this.saveData();
+    }
 
+  }
+
+  saveData() {
     if (this.entity.Id == undefined) {
       this._dataService.post('/api/appUser/add', JSON.stringify(this.entity))
         .subscribe((response: any) => {
